@@ -1,0 +1,84 @@
+ <div className="table-container">
+          <div className="table-header">
+            <h2>Complaints Overview</h2>
+            <div className="table-actions">
+              <input type="text" placeholder="Search complaints..." className="search-input" />
+            </div>
+          </div>
+          <div className="table-wrapper">
+            <table className="complaints-table">
+              <thead>
+                <tr>
+                  <th>Tracking ID</th>
+                  <th>College</th>
+                  <th>Urgency</th>
+                  <th>Category</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {complaints.map((complaint) => (
+                  <tr key={complaint.id}>
+                    <td className="complaint-id">{complaint.id}</td>
+                    <td>{complaint.college}</td>
+                    <td>
+                      <span className={`urgency-badge ${getUrgencyClass(complaint.urgency)}`}>
+                        {complaint.urgency}
+                      </span>
+                    </td>
+                    <td>{complaint.category}</td>
+                    <td>{complaint.date}</td>
+                    <td>
+                      <span className={`status-badge ${getStatusClass(complaint.status)}`}>
+                        {complaint.status}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        className="action-btn view"
+                        onClick={() => handleView(complaint)} // pass current row data
+                      >
+                        View
+                      </button>
+                    </td>
+
+                  </tr>
+                
+                ))}
+              </tbody>
+            </table>
+
+            {isModalOpen && selectedComplaint && (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <h2>Complaint Details</h2>
+
+        <p><strong>Category:</strong> {selectedComplaint.category}</p>
+        <p><strong>Description:</strong> {selectedComplaint.description}</p>
+        <p><strong>Frequency:</strong> {selectedComplaint.frequency}</p>
+        <p><strong>Impact:</strong> {selectedComplaint.impact}</p>
+
+        {/* Optional: show attachment if available */}
+        {selectedComplaint.attachment && (
+          <p>
+            <strong>Attachment:</strong>{" "}
+            <a href={selectedComplaint.attachment} target="_blank" rel="noreferrer">
+              View File
+            </a>
+          </p>
+        )}
+
+        <button
+          className="close-btn"
+          onClick={() => setIsModalOpen(false)}
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  )}
+
+          </div>
+        </div>
